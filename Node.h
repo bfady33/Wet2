@@ -163,11 +163,11 @@ public:
         subtree_size = 1;
         if (left_son != NULL) {
             subtree_size += left_son->subtree_size;
-            subtree_score_sum = +left_son->subtree_score_sum;
+            subtree_score_sum += left_son->subtree_score_sum;
         }
         if (right_son != NULL) {
             subtree_size += right_son->subtree_size;
-            subtree_score_sum = +right_son->subtree_score_sum;
+            subtree_score_sum += right_son->subtree_score_sum;
         }
     }
 
@@ -335,13 +335,17 @@ public:
         if(k>subtree_size){
             return -1;
         }
-        if(k==left_son->subtree_size){
-            return left_son->subtree_score_sum;
+        if(right_son!=NULL) {
+            if(k==right_son->subtree_size){
+                return right_son->subtree_score_sum;
+            }
+            if(k<right_son->subtree_size){
+                return right_son->GetScoreOfBest(k);
+            }
+            return personal_score + right_son->subtree_score_sum+left_son->GetScoreOfBest(k-1-right_son->subtree_size);
+        } else{
+            return personal_score+left_son->GetScoreOfBest(k-1);
         }
-        if(k<left_son->subtree_size){
-            return left_son->GetScoreOfBest(k);
-        }
-        return personal_score + left_son->subtree_score_sum+right_son->GetScoreOfBest(k-1-left_son->subtree_size);
     }
 
 
