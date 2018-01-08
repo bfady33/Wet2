@@ -15,7 +15,11 @@ Group::~Group(){
 }
 
 void Group::SetHeapIndex(int index){
-    this->heap_index = heap_index;
+    this->heap_index = index;
+}
+
+int Group::GetHeapIndex(){
+    return this->heap_index;
 }
 
 int Group::getID(){

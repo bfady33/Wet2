@@ -34,6 +34,8 @@ public:
 
     void SetHeapIndex(int index);
 
+    int GetHeapIndex();
+
     int getID();
 
     void InsertGladiator(int g_score , int g_ID);
