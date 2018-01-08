@@ -27,7 +27,7 @@ private:
 
 public:
 
-    Heap(int num_of_groups, group **trainingGroupsPointers);
+    Heap(int num_of_groups, Group **trainingGroupsPointers);
 
     ~Heap();
 

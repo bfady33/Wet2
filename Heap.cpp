@@ -6,13 +6,12 @@
 
 void swap(Group** arr , int index , int min_index){
     Group* temp;
-    int temp_id;
 
     temp = arr[index];
-    arr[index]->SetHeapIndex(min_index);
-    arr[index] = arr[min_index];
     arr[min_index]->SetHeapIndex(index);
-    arr[min_index] = arr[index];
+    arr[index] = arr[min_index];
+    arr[index]->SetHeapIndex(min_index);
+    arr[min_index] = temp;
 }
 
 void Heap::decreaseArr(){
