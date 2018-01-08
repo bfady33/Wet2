@@ -195,6 +195,13 @@ public:
         }
     }
 
+    int GetBestK(int k){
+        if(root==NULL){
+            return -1;
+        }
+        return root->GetScoreOfBest(k);
+    }
+
 
 
 
