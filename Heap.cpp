@@ -35,13 +35,23 @@ void Heap::incraseArr(){
 }
 
 void Heap::siftUp(int index) {
+    if(index <= 0)
+        return;
+
     if(arr[(index-1) / 2]->getID() > arr[index]->getID()){
         swap(arr , index , (index-1) / 2);
         siftUp((index-1) / 2);
     }
 }
 
+Group** Heap::getArr() {
+    return arr;
+}
+
 void Heap::siftDown(int index){
+    if(index > size/2-1)
+        return;
+
     int min_index;
 
     if(arr[2*index+1]->getID() < arr[2*index+2]->getID()) {
@@ -66,11 +76,12 @@ Heap::Heap(int num_of_groups , Group** trainingGroupsPointers){
     capacity = 2*num_of_groups;
     arr = new Group*[capacity];
 
-    for(int i = n-1 ; i>= 0 ; i--){
+    for(int i = num_of_groups-1 ; i>= 0 ; i--){
         arr[i] = trainingGroupsPointers[i];
+        arr[i]->SetHeapIndex(i);
     }
 
-    for (int j = (n/2-1); j >= 0 ; j++){
+    for (int j = (num_of_groups/2-1); j >= 0 ; j--){
         siftDown(j);
     }
 }
@@ -108,8 +119,8 @@ void Heap::DelMin() {
 void Heap::DelIndex(int index){
     //create a group G with id 0
     arr[index]->SetHeapIndex(-1);
-    Group g(-1);
-    arr[index] = &g;
+    Group* g = new Group(-1);
+    arr[index] = g;
     siftUp(index);
     DelMin();
 }

@@ -37,6 +37,8 @@ public:
 
     void DelMin();
 
+    Group** getArr();
+
 
     void DelIndex(int index);
 
