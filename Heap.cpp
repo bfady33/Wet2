@@ -43,10 +43,10 @@ void Heap::siftUp(int index) {
         siftUp((index-1) / 2);
     }
 }
-
+/*
 Group** Heap::getArr() {
     return arr;
-}
+}*/
 
 void Heap::siftDown(int index){
     if(index > size/2-1)
