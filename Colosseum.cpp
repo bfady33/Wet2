@@ -26,6 +26,7 @@ Colosseum::Colosseum(int n , int* trainingGroupsIDs){
 Colosseum::~Colosseum() {
     delete(colo_heap);
     delete(colo_HT);
+    delete(Gladiators);
 }
 
 void Colosseum::addTrainingGroup (int trainingGroupID){
