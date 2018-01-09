@@ -6,14 +6,21 @@
 
 
 Colosseum::Colosseum(int n , int* trainingGroupsIDs){
+
     colo_HT= new HashTable(n);
     Group** GArr = new Group*[n];
     for (int i = 0; i < n; ++i) {
+        if (trainingGroupsIDs[i] < 0) {
+            delete(colo_HT);
+            delete[](GArr);
+            throw Fail();
+        }
         colo_HT->Insert(trainingGroupsIDs[i]);
         GArr[i] = colo_HT->getGroup(trainingGroupsIDs[i]);
     }
     colo_heap= new Heap(n , GArr);
     delete[](GArr);
+    Gladiators = new SplayTree<int>();
 }
 
 Colosseum::~Colosseum() {
@@ -36,6 +43,11 @@ void Colosseum::addGladiator(int gladiatorID, int score, int trainingGroup){
     if (pointer == NULL)
         throw Fail();
 
+    if(Gladiators->find(gladiatorID) == true){
+        throw Fail();
+    }
+    Gladiators->insert(gladiatorID , 0);
+
     pointer->InsertGladiator(score , gladiatorID);
 }
 
@@ -43,17 +55,29 @@ void Colosseum::trainingGroupFight (int trainingGroup1, int trainingGroup2, int 
     if(k1 <= 0 || k2<= 0 || trainingGroup1 <0 || trainingGroup2 < 0)
         throw Invalid_Input();
 
+    if(trainingGroup1 == trainingGroup2)
+        throw Fail();
+
     Group* pointer1 = colo_HT->getGroup(trainingGroup1);
     Group* pointer2 = colo_HT->getGroup(trainingGroup2);
     if (pointer1 == NULL || pointer2 == NULL)
         throw Fail();
 
+    if(pointer1->GetHeapIndex() == -1 || pointer2->GetHeapIndex() == -1)
+        throw Fail();
+
     int max1 = pointer1->GetMaxKScores(k1);
-    int max2 = pointer1->GetMaxKScores(k2);
+    int max2 = pointer2->GetMaxKScores(k2);
     if(max1 == -1 || max2 == -1)
         throw Fail();
 
-    if(max1 > max2)
+    if(max1 == max2) {
+        if(pointer1->getID() < pointer2->getID())
+            colo_heap->DelIndex(pointer2->GetHeapIndex());
+        else
+            colo_heap->DelIndex(pointer1->GetHeapIndex());
+    }
+    else if(max1 > max2)
         colo_heap->DelIndex(pointer2->GetHeapIndex());
     else
         colo_heap->DelIndex(pointer1->GetHeapIndex());

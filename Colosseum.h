@@ -11,6 +11,7 @@
 #include "HashTable.h"
 #include "Gladiator.h"
 
+
 using namespace DataStructure;
 
 class Colosseum {
@@ -35,6 +36,7 @@ public:
 private:
     Heap* colo_heap;
     HashTable* colo_HT;
+    SplayTree<int>* Gladiators;
 };
 
 

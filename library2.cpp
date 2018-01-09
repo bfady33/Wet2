@@ -6,12 +6,25 @@
 #include "Colosseum.h"
 
 void* init(int n, int* trainingGroupsIDs) {
-    Colosseum* DS = new Colosseum(n, trainingGroupsIDs);
+    if(n < 2 || trainingGroupsIDs == NULL)
+        return NULL;
+
+    Colosseum* DS;
+
+    try{
+        DS = new Colosseum(n, trainingGroupsIDs);
+    }
+    catch(Fail& exc) {
+        return NULL;
+    }
+
     return (void*)DS;
 }
 
 
 StatusType addGladiator(void *DS, int gladiatorID, int score, int trainingGroup){
+    if(DS == NULL)
+        return INVALID_INPUT;
     try{
         ((Colosseum*)DS)->addGladiator(gladiatorID , score , trainingGroup);
     }
@@ -30,6 +43,8 @@ StatusType addGladiator(void *DS, int gladiatorID, int score, int trainingGroup)
 }
 
 StatusType trainingGroupFight(void *DS, int trainingGroup1, int trainingGroup2, int k1, int k2) {
+    if(DS == NULL)
+        return INVALID_INPUT;
     try{
         ((Colosseum*)DS)->trainingGroupFight(trainingGroup1 , trainingGroup2 , k1, k2);
     }
@@ -47,13 +62,17 @@ StatusType trainingGroupFight(void *DS, int trainingGroup1, int trainingGroup2, 
 
 }
 
-void quit(void** DS){
-    delete(*(Colosseum**)DS);
-    *DS = NULL;
+void quit(void** DS) {
+    if (DS != NULL) {
+        delete (*(Colosseum **) DS);
+        *DS = NULL;
+    }
 }
 
 
 StatusType   getMinTrainingGroup(void* DS, int* trainingGroup) {
+    if(DS == NULL)
+        return INVALID_INPUT;
     try{
         ((Colosseum*)DS)-> getMinTrainingGroup(trainingGroup);
     }
@@ -72,6 +91,8 @@ StatusType   getMinTrainingGroup(void* DS, int* trainingGroup) {
 
 
 StatusType addTrainingGroup(void *DS, int trainingGroupID){
+    if(DS == NULL)
+        return INVALID_INPUT;
     try{
         ((Colosseum*)DS)->addTrainingGroup(trainingGroupID);
     }

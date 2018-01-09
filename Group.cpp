@@ -32,7 +32,7 @@ void Group::InsertGladiator(int g_score , int g_ID){
     Gladiator g(g_ID , g_score);
     bool answer = this->gladiators->find(g);
 
-    if(answer == false)
+    if(answer == true)
         throw Fail();
 
     this->gladiators->insert(g , g_score);

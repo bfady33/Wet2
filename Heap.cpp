@@ -8,9 +8,9 @@ void swap(Group** arr , int index , int min_index){
     Group* temp;
 
     temp = arr[index];
+    arr[index]->SetHeapIndex(min_index);
     arr[min_index]->SetHeapIndex(index);
     arr[index] = arr[min_index];
-    arr[index]->SetHeapIndex(min_index);
     arr[min_index] = temp;
 }
 
@@ -54,7 +54,13 @@ void Heap::siftDown(int index){
 
     int min_index;
 
-    if(arr[2*index+1]->getID() < arr[2*index+2]->getID()) {
+    if(2*index+1 >= size){
+        return;
+    }
+    if(2*index+2 >= size){
+        min_index = 2*index+1;
+    }
+    else if(arr[2*index+1]->getID() < arr[2*index+2]->getID()) {
         min_index = 2*index + 1;
     }
     else{
@@ -91,14 +97,15 @@ Heap::~Heap() {
 }
 
 void Heap::Insert(Group* pointer){
-    if(size+1 == capacity){
-        incraseArr();
-    }
     size++;
 
     arr[size-1] = pointer;
     arr[size-1]->SetHeapIndex(size-1);
     siftUp(size-1);
+
+    if(size == capacity){
+        incraseArr();
+    }
 }
 
 int Heap::FindMin(){
@@ -111,7 +118,7 @@ void Heap::DelMin() {
     }
     arr[0]->SetHeapIndex(-1);
     arr[size-1]->SetHeapIndex(0);
-    swap(arr , 0 , size-1);
+    arr[0] = arr[size -1];
     size--;
     siftDown(0);
 }
@@ -120,7 +127,9 @@ void Heap::DelIndex(int index){
     //create a group G with id 0
     arr[index]->SetHeapIndex(-1);
     Group* g = new Group(-1);
+    g->SetHeapIndex(index);
     arr[index] = g;
     siftUp(index);
     DelMin();
+    delete(g);
 }
